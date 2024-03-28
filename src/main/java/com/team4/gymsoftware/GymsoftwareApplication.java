@@ -20,7 +20,7 @@ public class GymsoftwareApplication {
 	}
 
 	@Bean
-	CommandLineRunner runner(UserRepository repository) {
+	CommandLineRunner runner(GymUserRepository repository) {
 		return args -> {
 
 			GymUser gymUser = new GymUser();
