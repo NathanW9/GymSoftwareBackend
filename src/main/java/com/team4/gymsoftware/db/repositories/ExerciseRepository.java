@@ -5,10 +5,10 @@ import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
 
-public interface TrainerRepository extends Repository<Trainer, Long> {
+public interface ExerciseRepository extends Repository<Exercise, Long> {
 
-    Trainer save(Trainer trainer);
+    Exercise save(Exercise exercise);
 
-    Optional<Trainer> findById(long id);
+    Optional<Exercise> findById(long id);
 
 }
