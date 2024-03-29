@@ -32,4 +32,12 @@ public class GymUser {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
+    }
 }
