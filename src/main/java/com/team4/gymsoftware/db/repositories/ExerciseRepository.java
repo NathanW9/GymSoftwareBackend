@@ -11,4 +11,6 @@ public interface ExerciseRepository extends Repository<Exercise, Long> {
 
     Optional<Exercise> findById(long id);
 
+    Optional<Exercise> findByName(String name);
+
 }
