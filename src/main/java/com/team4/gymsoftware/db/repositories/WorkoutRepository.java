@@ -11,4 +11,6 @@ public interface WorkoutRepository extends Repository<Workout, Long> {
 
     Optional<Workout> findById(long id);
 
+    Optional<Workout> findByNameAndGymUser(String name, GymUser gymUser);
+
 }

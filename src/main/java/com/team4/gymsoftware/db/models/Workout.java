@@ -2,6 +2,8 @@ package com.team4.gymsoftware.db.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Workout {
 
@@ -22,6 +24,12 @@ public class Workout {
             referencedColumnName = "id"
     )
     private GymUser gymUser;
+    @OneToMany
+    @JoinColumn(
+            name = "workout_id",
+            referencedColumnName = "id"
+    )
+    private List<ExerciseSection> exerciseSections;
 
     public Long getId() {
         return id;
