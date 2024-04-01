@@ -1,10 +1,12 @@
 package com.team4.gymsoftware.services;
 
 import com.team4.gymsoftware.db.models.ExerciseSection;
+import com.team4.gymsoftware.db.models.GymUser;
 import com.team4.gymsoftware.db.models.Trainer;
 import com.team4.gymsoftware.db.models.Workout;
 import com.team4.gymsoftware.db.repositories.*;
 import com.team4.gymsoftware.dto.CreateWorkoutRequest;
+import com.team4.gymsoftware.dto.EditWorkoutRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -62,4 +64,27 @@ public class WorkoutServiceImpl implements WorkoutService{
         }
         return Optional.empty();
     }
+
+    @Override
+    public Optional<Workout> patchWorkout(EditWorkoutRequest editWorkoutRequest){
+
+        Optional<GymUser> tempUser = gymUserRepository.findById(editWorkoutRequest.createWorkoutRequest().user_id());
+        if(tempUser.isEmpty()){
+            return Optional.empty();
+        }
+
+        Optional<Workout> tempWorkout =  workoutRepository.findByNameAndGymUser(editWorkoutRequest
+                .createWorkoutRequest().name(), tempUser.get());
+
+        if(tempWorkout.isEmpty()){
+            return Optional.empty();
+        }
+
+        exerciseSectionRepository.deleteByWorkout(tempWorkout.get());
+        workoutRepository.deleteById(tempWorkout.get().getId());
+
+        return saveWorkout(editWorkoutRequest.createWorkoutRequest());
+
+    }
+
 }

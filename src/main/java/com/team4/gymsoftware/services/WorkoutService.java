@@ -9,4 +9,6 @@ public interface WorkoutService {
 
     public Optional<Workout> saveWorkout(CreateWorkoutRequest createWorkOutRequest);
 
+    public Optional<Workout> patchWorkout(EditWorkoutRequest editWorkoutRequest);
+
 }
