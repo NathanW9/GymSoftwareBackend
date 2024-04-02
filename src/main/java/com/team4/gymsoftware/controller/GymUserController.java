@@ -1,6 +1,7 @@
 package com.team4.gymsoftware.controller;
 
 import com.team4.gymsoftware.db.models.GymUser;
+import com.team4.gymsoftware.dto.AssignTrainerRequest;
 import com.team4.gymsoftware.dto.CreateGymUserRequest;
 import com.team4.gymsoftware.services.GymUserService;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,23 @@ public class GymUserController {
         }
         else {
             return new ResponseEntity<>("Could not create user: user already exists with this name", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @PostMapping(path = "/assigntrainer",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> assignTrainer(@RequestBody AssignTrainerRequest assignTrainerRequest){
+
+        Optional<GymUser> gymUser = gymUserService.assignTrainer(assignTrainerRequest);
+
+        if(gymUser.isPresent()){
+            return new ResponseEntity<>("Successfuly assigned user " + gymUser.get().getName() +
+                    " to trainer " + gymUser.get().getTrainer().getName(), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("Could not assign user: user or trainer do not exist", HttpStatus.BAD_REQUEST);
         }
 
     }

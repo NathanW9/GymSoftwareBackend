@@ -4,6 +4,7 @@ import com.team4.gymsoftware.db.models.GymUser;
 import com.team4.gymsoftware.db.models.Trainer;
 import com.team4.gymsoftware.db.repositories.GymUserRepository;
 import com.team4.gymsoftware.db.repositories.TrainerRepository;
+import com.team4.gymsoftware.dto.AssignTrainerRequest;
 import com.team4.gymsoftware.dto.CreateGymUserRequest;
 import org.springframework.stereotype.Service;
 
@@ -46,4 +47,21 @@ public class GymUserServiceImpl implements GymUserService{
         return Optional.of(gymUserRepository.save(gymUser));
 
     }
+
+    @Override
+    public Optional<GymUser> assignTrainer(AssignTrainerRequest assignTrainerRequest){
+
+        Optional<Trainer> trainer = trainerRepository.findById(assignTrainerRequest.trainer_id());
+        Optional<GymUser> gymUser = gymUserRepository.findById(assignTrainerRequest.user_id());
+
+        if(trainer.isEmpty() || gymUser.isEmpty()){
+            return Optional.empty();
+        }
+
+        gymUser.get().setTrainer(trainer.get());
+
+        return Optional.of(gymUserRepository.save(gymUser.get()));
+
+    }
+
 }
