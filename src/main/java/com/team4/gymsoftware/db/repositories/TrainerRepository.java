@@ -11,4 +11,6 @@ public interface TrainerRepository extends Repository<Trainer, Long> {
 
     Optional<Trainer> findById(long id);
 
+    Optional<Trainer> findByName(String name);
+
 }
