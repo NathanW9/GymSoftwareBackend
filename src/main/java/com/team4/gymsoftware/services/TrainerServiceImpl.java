@@ -25,6 +25,7 @@ public class TrainerServiceImpl implements TrainerService{
 
         Trainer trainer = new Trainer();
         trainer.setName(createTrainerRequest.name());
+        trainer.setPassword(createTrainerRequest.password());
 
         return Optional.of(trainerRepository.save(trainer));
 

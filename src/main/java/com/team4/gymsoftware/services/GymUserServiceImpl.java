@@ -32,6 +32,7 @@ public class GymUserServiceImpl implements GymUserService{
 
         GymUser gymUser = new GymUser();
         gymUser.setName(createGymUserRequest.name());
+        gymUser.setPassword(createGymUserRequest.password());
 
         if(createGymUserRequest.trainer_id() != null){
             Optional<Trainer> trainer = trainerRepository.findById(createGymUserRequest.trainer_id());
