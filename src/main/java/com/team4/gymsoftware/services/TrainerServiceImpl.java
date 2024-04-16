@@ -23,6 +23,15 @@ public class TrainerServiceImpl implements TrainerService{
             return Optional.empty();
         }
 
+        try{
+            if(createTrainerRequest.password().isEmpty()){
+                return Optional.empty();
+            }
+        }
+        catch(NullPointerException e){
+            return Optional.empty();
+        }
+
         Trainer trainer = new Trainer();
         trainer.setName(createTrainerRequest.name());
         trainer.setPassword(createTrainerRequest.password());

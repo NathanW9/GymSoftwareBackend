@@ -21,7 +21,7 @@ public class TrainerController {
         this.trainerService = trainerService;
     }
 
-    @PostMapping(path = "/createtrainer",
+    @PostMapping(path = "/registertrainer",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createTrainer(@RequestBody CreateTrainerRequest createTrainerRequest){
@@ -33,7 +33,7 @@ public class TrainerController {
                     + " with id " + trainer.get().getId(), HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<>("Could not create trainer: trainer already exists with this name", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Could not create trainer", HttpStatus.BAD_REQUEST);
         }
 
     }

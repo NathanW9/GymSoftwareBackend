@@ -30,6 +30,15 @@ public class GymUserServiceImpl implements GymUserService{
             return Optional.empty();
         }
 
+        try{
+            if(createGymUserRequest.password().isEmpty()){
+                return Optional.empty();
+            }
+        }
+        catch(NullPointerException e){
+            return Optional.empty();
+        }
+
         GymUser gymUser = new GymUser();
         gymUser.setName(createGymUserRequest.name());
         gymUser.setPassword(createGymUserRequest.password());
