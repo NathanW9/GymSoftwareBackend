@@ -124,12 +124,32 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public Optional<GymUser> authenticateUser(String token) {
-        return Optional.empty();
+
+        Optional<AuthSessionUser> userSession = authSessionUserRepository.findByToken(token);
+
+        if(userSession.isEmpty()){
+            return Optional.empty();
+        }
+
+        GymUser user = userSession.get().getUser();
+
+        return Optional.of(user);
+
     }
 
     @Override
     public Optional<Trainer> authenticateTrainer(String token) {
-        return Optional.empty();
+
+        Optional<AuthSessionTrainer> trainerSession = authSessionTrainerRepository.findByToken(token);
+
+        if(trainerSession.isEmpty()){
+            return Optional.empty();
+        }
+
+        Trainer trainer = trainerSession.get().getTrainer();
+
+        return Optional.of(trainer);
+
     }
 
     @Override
