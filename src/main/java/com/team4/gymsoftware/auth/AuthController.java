@@ -67,4 +67,48 @@ public class AuthController {
 
     }
 
+    @PostMapping(path = "/logintrainer",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> loginTrainer(@RequestBody LoginRequest loginRequest) {
+
+        Optional<String> token = null;
+
+        try {
+            token = authService.loginTrainer(loginRequest);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Login credentials not provided", HttpStatus.BAD_REQUEST);
+        } catch (DuplicateRequestException e){
+            return new ResponseEntity<>("Session is already active for trainer", HttpStatus.UNAUTHORIZED);
+        }
+        if (token.isEmpty()) {
+            return new ResponseEntity<>("Invalid login credentials", HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(token.get(), HttpStatus.OK);
+
+    }
+
+    @PostMapping(path = "/logouttrainer",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> logoutTrainer(@RequestBody LogoutRequest logoutRequest) {
+
+        Optional<String> result = null;
+
+        try{
+            result = authService.logoutTrainer(logoutRequest);
+        }
+        catch(IllegalArgumentException e){
+            return new ResponseEntity<>("Token was not sent", HttpStatus.BAD_REQUEST);
+        }
+
+        if(result.isEmpty()){
+            return new ResponseEntity<>("Invalid token", HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(result.get(),HttpStatus.OK);
+
+    }
+
 }

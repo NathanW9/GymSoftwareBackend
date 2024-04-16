@@ -1,6 +1,7 @@
 package com.team4.gymsoftware.auth;
 
 import com.sun.jdi.request.DuplicateRequestException;
+import com.team4.gymsoftware.db.models.AuthSessionTrainer;
 import com.team4.gymsoftware.db.models.AuthSessionUser;
 import com.team4.gymsoftware.db.models.GymUser;
 import com.team4.gymsoftware.db.models.Trainer;
@@ -80,7 +81,45 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public Optional<String> loginTrainer(LoginRequest loginRequest) {
-        return Optional.empty();
+
+        Random r = new Random();
+
+        String username = loginRequest.username();
+        String password = loginRequest.password();
+
+        if(username == null || password == null){
+            throw new IllegalArgumentException();
+        }
+
+        Optional<Trainer> trainer = trainerRepository.
+                findByNameAndPassword(username, password);
+
+        if(trainer.isEmpty()){
+            return Optional.empty();
+        }
+
+        if(authSessionTrainerRepository.findByTrainer(trainer.get()).isPresent()){
+            throw new DuplicateRequestException();
+        }
+
+        AuthSessionTrainer newSession = new AuthSessionTrainer();
+        newSession.setTrainer(trainer.get());
+        newSession.setStarted(Instant.now());
+
+        String token = "";
+
+        for(int ndx = 0; ndx < 5; ndx++){
+            token = token.concat(String.valueOf((char)(r.nextInt(26) + 'a')));
+        }
+
+        for(int ndx = 0; ndx < 5; ndx++){
+            token = token.concat(String.valueOf(r.nextInt(26)));
+        }
+
+        newSession.setToken("trainer_" + trainer.get().getName() + "_" + token);
+
+        return Optional.of(authSessionTrainerRepository.save(newSession).getToken());
+
     }
 
     @Override
@@ -117,7 +156,24 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public Optional<String> logoutTrainer(LogoutRequest logoutRequest) {
-        return Optional.empty();
+
+        String token = logoutRequest.token();
+
+        if(token == null){
+            throw new IllegalArgumentException();
+        }
+
+        Optional<AuthSessionTrainer> deletedSession =
+                authSessionTrainerRepository.findByToken(token);
+
+        if(deletedSession.isEmpty()){
+            return Optional.empty();
+        }
+
+        authSessionTrainerRepository.deleteById(deletedSession.get().getId());
+
+        return Optional.of("Logged out trainer");
+
     }
 
 
