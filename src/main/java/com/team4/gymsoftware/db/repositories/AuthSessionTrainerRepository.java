@@ -1,13 +1,13 @@
 package com.team4.gymsoftware.db.repositories;
 
-import com.team4.gymsoftware.db.models.AuthSessionUser;
+import com.team4.gymsoftware.db.models.AuthSessionTrainer;
 import org.springframework.data.repository.Repository;
 import java.util.Optional;
 
-public interface AuthSessionTrainerRepository extends Repository<AuthSessionUser, Long> {
+public interface AuthSessionTrainerRepository extends Repository<AuthSessionTrainer, Long> {
 
-    AuthSessionUser save(AuthSessionUser authSessionUser);
+    AuthSessionTrainer save(AuthSessionTrainer authSessionTrainr);
 
-    Optional<AuthSessionUser> findById(long id);
+    Optional<AuthSessionTrainer> findById(long id);
 
 }

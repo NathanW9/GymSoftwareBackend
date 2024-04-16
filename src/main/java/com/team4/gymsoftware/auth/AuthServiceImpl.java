@@ -9,6 +9,7 @@ import com.team4.gymsoftware.db.repositories.AuthSessionUserRepository;
 import com.team4.gymsoftware.db.repositories.GymUserRepository;
 import com.team4.gymsoftware.db.repositories.TrainerRepository;
 import com.team4.gymsoftware.dto.LoginRequest;
+import com.team4.gymsoftware.dto.LogoutRequest;
 import org.springframework.stereotype.Service;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -91,5 +92,33 @@ public class AuthServiceImpl implements AuthService{
     public Optional<Trainer> authenticateTrainer(String token) {
         return Optional.empty();
     }
+
+    @Override
+    public Optional<String> logoutUser(LogoutRequest logoutRequest) {
+
+        String token = logoutRequest.token();
+
+        if(token == null){
+            throw new IllegalArgumentException();
+        }
+
+        Optional<AuthSessionUser> deletedSession =
+                authSessionUserRepository.findByToken(token);
+
+        if(deletedSession.isEmpty()){
+            return Optional.empty();
+        }
+
+        authSessionUserRepository.deleteById(deletedSession.get().getId());
+
+        return Optional.of("Logged out user");
+
+    }
+
+    @Override
+    public Optional<String> logoutTrainer(LogoutRequest logoutRequest) {
+        return Optional.empty();
+    }
+
 
 }

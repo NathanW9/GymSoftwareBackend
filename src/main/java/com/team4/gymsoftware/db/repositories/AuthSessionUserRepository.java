@@ -11,15 +11,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface AuthSessionUserRepository extends Repository<AuthSessionTrainer, Long> {
+public interface AuthSessionUserRepository extends Repository<AuthSessionUser, Long> {
 
     AuthSessionUser save(AuthSessionUser authSessionUser);
 
     Optional<AuthSessionUser> findById(long id);
 
+    Optional<AuthSessionUser> findByToken(String token);
+
     @Transactional
     @Query("select id from AuthSessionUser where user=:user")
     Optional<String> findByUser(GymUser user);
+
+    @Modifying
+    @Transactional
+    @Query("delete from AuthSessionUser s where s.id=:id")
+    void deleteById(long id);
 
     @Transactional
     @Modifying
