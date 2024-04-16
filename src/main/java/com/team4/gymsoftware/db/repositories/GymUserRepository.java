@@ -13,4 +13,6 @@ public interface GymUserRepository extends Repository<GymUser, Long> {
 
     Optional<GymUser> findByName(String name);
 
+    Optional<GymUser> findByNameAndPassword(String name, String password);
+
 }
