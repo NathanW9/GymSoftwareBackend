@@ -5,12 +5,14 @@ import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
 
-public interface RequestWorkoutRepository extends Repository<Request, Long> {
+public interface RequestWorkoutRepository extends Repository<RequestWorkout, Long> {
 
-    RequestWorkout save(RequestWorkout workoutRequest);
+    RequestWorkout save(RequestWorkout requestWorkout);
+
+    Optional<RequestWorkout> findById(long id);
 
     Optional<RequestWorkout> findUserById(Long id);
 
-
+    Optional<RequestWorkout> findTrainerById(Long id);
 
 }

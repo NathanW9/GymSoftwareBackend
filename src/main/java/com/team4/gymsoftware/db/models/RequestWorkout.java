@@ -5,24 +5,44 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.time.Instant;
 
 @Entity
 public class RequestWorkout {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long trainer_id;
-    private Long user_id;
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "requester_id",
+            referencedColumnName = "id"
+    )
+    private GymUser requester;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "receiver_id",
+            referencedColumnName = "id"
+    )
+    private Trainer receiver;
     private String workout_type;
     private String workout_bodyPart;
     private String workout_intensity;
     private Boolean workout_equipment;
+    private Instant sent;
 
-    public Long getUserId() {
-        return user_id;
+    public Long getId() {
+        return id;
     }
 
-    public Long getTrainerId() {
-        return trainer_id;
+    public GymUser getRequester() {
+        return requester;
+    }
+
+    public Trainer getReceiver() {
+        return receiver;
     }
 
     public String getWorkoutType() {
@@ -41,12 +61,20 @@ public class RequestWorkout {
         return workout_equipment;
     }
 
-    public void setUserId(Long user_id) {
-        this.user_id = user_id;
+    public Instant getSent() {
+        return sent;
     }
 
-    public void setTrainerId(Long trainer_id) {
-        this.trainer_id = trainer_id;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setRequester(GymUser requester) {
+        this.requester = requester;
+    }
+
+    public void setReceiver(Trainer receiver) {
+        this.receiver = receiver;
     }
 
     public void setWorkoutType(String workout_type) {
@@ -63,5 +91,9 @@ public class RequestWorkout {
 
     public void setWorkoutEquipment(Boolean workout_equipment) {
         this.workout_equipment = workout_equipment;
+    }
+
+    public void setSent(Instant sent) {
+        this.sent = sent;
     }
 }
