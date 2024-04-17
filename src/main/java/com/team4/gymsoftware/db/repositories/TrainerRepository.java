@@ -13,4 +13,6 @@ public interface TrainerRepository extends Repository<Trainer, Long> {
 
     Optional<Trainer> findByName(String name);
 
+    Optional<Trainer> findByNameAndPassword(String name, String password);
+
 }

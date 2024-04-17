@@ -22,7 +22,7 @@ public class GymUserController {
         this.gymUserService = gymUserService;
     }
 
-    @PostMapping(path = "/createuser",
+    @PostMapping(path = "/registeruser",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createUser(@RequestBody CreateGymUserRequest createGymUserRequest){
@@ -34,7 +34,7 @@ public class GymUserController {
             + " with id " + gymUser.get().getId(), HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<>("Could not create user: user already exists with this name", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Could not create user", HttpStatus.BAD_REQUEST);
         }
 
     }

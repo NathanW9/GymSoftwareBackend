@@ -9,6 +9,7 @@ public class GymUser {
             strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    private String password;
 
     @ManyToOne
     @JoinColumn(
@@ -25,6 +26,10 @@ public class GymUser {
         return name;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -39,5 +44,9 @@ public class GymUser {
 
     public void setTrainer(Trainer trainer) {
         this.trainer = trainer;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
