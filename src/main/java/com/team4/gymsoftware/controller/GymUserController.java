@@ -56,4 +56,22 @@ public class GymUserController {
 
     }
 
+    @PostMapping(path = "/workoutrequest",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> requestWorkout(@RequestBody RequestWorkoutRequest requestWorkoutRequest){
+            
+            Optional<GymUser> gymUser = gymUserService.requestWorkout(requestWorkoutRequest);
+    
+            if(gymUser.isPresent()){
+                return new ResponseEntity<>("Successfuly requested workout for user " + gymUser.get().getName() +
+                        " with trainer " + gymUser.get().getTrainer().getName(), HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>("Could not request workout: user or trainer do not exist", HttpStatus.BAD_REQUEST);
+            }
+    
+        }
+
+
 }

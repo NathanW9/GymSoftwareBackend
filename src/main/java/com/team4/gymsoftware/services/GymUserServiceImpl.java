@@ -64,4 +64,21 @@ public class GymUserServiceImpl implements GymUserService{
 
     }
 
+    @Override
+    public Optional<GymUser> requestWorkout(RequestWorkoutRequest requestWorkoutRequest) {
+        Optional<GymUser> gymUser = gymUserRepository.findById(requestWorkoutRequest.user_id());
+        Optional<Trainer> trainer = trainerRepository.findById(requestWorkoutRequest.trainer_id());
+
+        if(gymUser.isEmpty() || trainer.isEmpty()){
+            return Optional.empty();
+        }
+        
+        gymUser.get().setWorkout_type(requestWorkoutRequest.workout_type());
+        gymUser.get().setWorkout_bodyPart(requestWorkoutRequest.workout_bodyPart());
+        gymUser.get().setWorkout_intensity(requestWorkoutRequest.workout_intensity());
+        gymUser.get().setWorkout_equipment(requestWorkoutRequest.workout_equipment());
+
+        return Optional.of(gymUserRepository.save(gymUser.get()));
+    }
+
 }
