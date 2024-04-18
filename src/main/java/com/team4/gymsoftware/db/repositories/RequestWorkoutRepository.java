@@ -11,8 +11,4 @@ public interface RequestWorkoutRepository extends Repository<RequestWorkout, Lon
 
     Optional<RequestWorkout> findById(long id);
 
-    Optional<RequestWorkout> findUserById(Long id);
-
-    Optional<RequestWorkout> findTrainerById(Long id);
-
 }

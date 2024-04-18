@@ -27,9 +27,11 @@ public class RequestWorkout {
             referencedColumnName = "id"
     )
     private Trainer receiver;
+    
     private String workout_type;
     private String workout_bodyPart;
     private String workout_intensity;
+    private String description;
     private Boolean workout_equipment;
     private Instant sent;
 
@@ -65,6 +67,10 @@ public class RequestWorkout {
         return sent;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -95,5 +101,9 @@ public class RequestWorkout {
 
     public void setSent(Instant sent) {
         this.sent = sent;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
