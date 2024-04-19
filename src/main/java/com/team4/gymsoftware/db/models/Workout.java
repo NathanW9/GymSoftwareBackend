@@ -26,7 +26,7 @@ public class Workout {
     private GymUser gymUser;
     @OneToMany
     @JoinColumn(
-            name = "workout_id",
+            name = "requestWorkout_id",
             referencedColumnName = "id"
     )
     private List<ExerciseSection> exerciseSections;

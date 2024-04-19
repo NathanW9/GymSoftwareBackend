@@ -38,4 +38,18 @@ public class TrainerController {
 
     }
 
+    @PostMapping(path = "/createworkout",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createWorkoutFromRequest(@RequestBody RequestWorkoutRequest requestWorkoutRequest) {
+        Optional<Workout> createdWorkout = workoutService.createWorkoutFromRequest(requestWorkoutRequest);
+
+        if (createdWorkout.isPresent()) {
+            return new ResponseEntity<>("Workout created successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to create workout", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 }

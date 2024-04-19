@@ -9,4 +9,6 @@ public interface TrainerService {
 
     public Optional<Trainer> saveTrainer(CreateTrainerRequest createTrainerRequest);
 
+    public Optional<Workout> createWorkoutFromRequest(RequestWorkoutRequest requestWorkoutRequest);
+
 }

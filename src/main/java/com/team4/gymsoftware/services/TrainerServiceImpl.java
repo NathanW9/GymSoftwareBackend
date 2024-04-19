@@ -39,4 +39,21 @@ public class TrainerServiceImpl implements TrainerService{
         return Optional.of(trainerRepository.save(trainer));
 
     }
+
+    @Override
+    public Optional<Workout> createWorkoutFromRequest(RequestWorkoutRequest requestWorkoutRequest) {
+        Optional<Trainer> trainer = trainerRepository.findById(requestWorkoutRequest.getTrainerId());
+        Optional<GymUser> user = gymUserRepository.findById(requestWorkoutRequest.getUserId());
+
+        if (trainer.isPresent() && user.isPresent()) {
+            Workout workout = new Workout();
+            workout.setName("Workout for " + user.get().getName());
+            workout.setTrainer(trainer.get());
+            workout.setGymUser(user.get());
+
+            return Optional.of(workoutRepository.save(workout));
+        } else {
+            return Optional.empty();
+        }
+    }
 }

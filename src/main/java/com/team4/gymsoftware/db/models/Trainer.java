@@ -9,6 +9,12 @@ public class Trainer {
     private Long id;
     private String name;
     private String password;
+    @OneToMany
+    @JoinColumn(
+            name = "workout_id",
+            referencedColumnName = "id"
+    )
+    private List<RequestWorkout> workoutRequests;
 
     public Long getId() {
         return id;
