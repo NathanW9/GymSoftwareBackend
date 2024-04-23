@@ -1,13 +1,17 @@
 package com.team4.gymsoftware.services;
 
 import com.team4.gymsoftware.db.models.GymUser;
+import com.team4.gymsoftware.db.models.RequestWorkout;
 import com.team4.gymsoftware.db.models.Trainer;
 import com.team4.gymsoftware.db.repositories.GymUserRepository;
+import com.team4.gymsoftware.db.repositories.RequestWorkoutRepository;
 import com.team4.gymsoftware.db.repositories.TrainerRepository;
 import com.team4.gymsoftware.dto.AssignTrainerRequest;
 import com.team4.gymsoftware.dto.CreateGymUserRequest;
+import com.team4.gymsoftware.dto.RequestWorkoutRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -78,11 +82,12 @@ public class GymUserServiceImpl implements GymUserService{
     }
 
     @Override
-    public Optional<GymUser> requestWorkout(RequestWorkoutRequest requestWorkoutRequest) {
+    public Optional<RequestWorkout> requestWorkout(RequestWorkoutRequest requestWorkoutRequest) {
         Optional<GymUser> gymUser = gymUserRepository.findById(requestWorkoutRequest.user_id());
         Optional<Trainer> trainer = trainerRepository.findById(requestWorkoutRequest.trainer_id());
 
-        RequestWorkoutRepository requestWorkout = new RequestWorkoutRepository();
+        RequestWorkout requestWorkout = new RequestWorkout() {
+        };
 
         if(gymUser.isEmpty() || trainer.isEmpty()){
             return Optional.empty();
@@ -90,14 +95,14 @@ public class GymUserServiceImpl implements GymUserService{
 
         requestWorkout.setRequester(gymUser.get());
         requestWorkout.setReceiver(trainer.get());
-        requestWorkout.setWorkout_type(requestWorkoutRequest.workout_type());
-        requestWorkout.setWorkout_bodyPart(requestWorkoutRequest.workout_bodyPart());
-        requestWorkout.setWorkout_intensity(requestWorkoutRequest.workout_intensity());
+        requestWorkout.setWorkoutType(requestWorkoutRequest.workout_type());
+        requestWorkout.setWorkoutBodyPart(requestWorkoutRequest.workout_bodyPart());
+        requestWorkout.setWorkoutIntensity(String.valueOf(requestWorkoutRequest.workout_intensity()));
         requestWorkout.setDescription(requestWorkoutRequest.description());
-        requestWorkout.setWorkout_equipment(requestWorkoutRequest.workout_equipment());
+        requestWorkout.setWorkoutEquipment(requestWorkoutRequest.workout_equipment());
         requestWorkout.setSent(Instant.now());
 
-        return Optional.of(requestWorkoutRepository.save(requestWorkout.get()));
+        return Optional.of(requestWorkoutRepository.save(requestWorkout));
     }
 
 }

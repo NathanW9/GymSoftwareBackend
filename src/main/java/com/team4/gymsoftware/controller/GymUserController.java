@@ -3,6 +3,7 @@ package com.team4.gymsoftware.controller;
 import com.team4.gymsoftware.db.models.GymUser;
 import com.team4.gymsoftware.dto.AssignTrainerRequest;
 import com.team4.gymsoftware.dto.CreateGymUserRequest;
+import com.team4.gymsoftware.dto.RequestWorkoutRequest;
 import com.team4.gymsoftware.services.GymUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
