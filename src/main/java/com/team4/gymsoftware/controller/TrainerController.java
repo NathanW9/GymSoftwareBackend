@@ -1,8 +1,11 @@
 package com.team4.gymsoftware.controller;
 
 import com.team4.gymsoftware.db.models.Trainer;
+import com.team4.gymsoftware.db.models.Workout;
 import com.team4.gymsoftware.dto.CreateTrainerRequest;
+import com.team4.gymsoftware.dto.RequestWorkoutRequest;
 import com.team4.gymsoftware.services.TrainerService;
+import com.team4.gymsoftware.services.WorkoutService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +19,11 @@ import java.util.Optional;
 public class TrainerController {
 
     private TrainerService trainerService;
+    private WorkoutService workoutService;
 
-    public TrainerController(TrainerService trainerService) {
+    public TrainerController(TrainerService trainerService, WorkoutService workoutService) {
         this.trainerService = trainerService;
+        this.workoutService = workoutService;
     }
 
     @PostMapping(path = "/registertrainer",
@@ -42,7 +47,7 @@ public class TrainerController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createWorkoutFromRequest(@RequestBody RequestWorkoutRequest requestWorkoutRequest) {
-        Optional<Workout> createdWorkout = workoutService.createWorkoutFromRequest(requestWorkoutRequest);
+        Optional<Workout> createdWorkout = trainerService.createWorkoutFromRequest(requestWorkoutRequest);
 
         if (createdWorkout.isPresent()) {
             return new ResponseEntity<>("Workout created successfully", HttpStatus.OK);

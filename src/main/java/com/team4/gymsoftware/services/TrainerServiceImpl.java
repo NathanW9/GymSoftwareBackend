@@ -1,8 +1,13 @@
 package com.team4.gymsoftware.services;
 
+import com.team4.gymsoftware.db.models.GymUser;
 import com.team4.gymsoftware.db.models.Trainer;
+import com.team4.gymsoftware.db.models.Workout;
+import com.team4.gymsoftware.db.repositories.GymUserRepository;
 import com.team4.gymsoftware.db.repositories.TrainerRepository;
+import com.team4.gymsoftware.db.repositories.WorkoutRepository;
 import com.team4.gymsoftware.dto.CreateTrainerRequest;
+import com.team4.gymsoftware.dto.RequestWorkoutRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,9 +16,15 @@ import java.util.Optional;
 public class TrainerServiceImpl implements TrainerService{
 
     private final TrainerRepository trainerRepository;
+    private final GymUserRepository gymUserRepository;
+    private final WorkoutRepository workoutRepository;
 
-    public TrainerServiceImpl(TrainerRepository trainerRepository){
+    public TrainerServiceImpl(TrainerRepository trainerRepository,
+                              GymUserRepository gymUserRepository,
+                              WorkoutRepository workoutRepository){
         this.trainerRepository = trainerRepository;
+        this.gymUserRepository = gymUserRepository;
+        this.workoutRepository = workoutRepository;
     }
 
     @Override
@@ -42,8 +53,8 @@ public class TrainerServiceImpl implements TrainerService{
 
     @Override
     public Optional<Workout> createWorkoutFromRequest(RequestWorkoutRequest requestWorkoutRequest) {
-        Optional<Trainer> trainer = trainerRepository.findById(requestWorkoutRequest.getTrainerId());
-        Optional<GymUser> user = gymUserRepository.findById(requestWorkoutRequest.getUserId());
+        Optional<Trainer> trainer = trainerRepository.findById(requestWorkoutRequest.trainer_id());
+        Optional<GymUser> user = gymUserRepository.findById(requestWorkoutRequest.user_id());
 
         if (trainer.isPresent() && user.isPresent()) {
             Workout workout = new Workout();

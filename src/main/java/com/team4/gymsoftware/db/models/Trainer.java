@@ -2,6 +2,8 @@ package com.team4.gymsoftware.db.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Trainer {
 

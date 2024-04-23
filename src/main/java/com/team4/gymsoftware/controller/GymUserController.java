@@ -1,6 +1,7 @@
 package com.team4.gymsoftware.controller;
 
 import com.team4.gymsoftware.db.models.GymUser;
+import com.team4.gymsoftware.db.models.RequestWorkout;
 import com.team4.gymsoftware.dto.AssignTrainerRequest;
 import com.team4.gymsoftware.dto.CreateGymUserRequest;
 import com.team4.gymsoftware.dto.RequestWorkoutRequest;
@@ -62,11 +63,11 @@ public class GymUserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> requestWorkout(@RequestBody RequestWorkoutRequest requestWorkoutRequest){
             
-            Optional<GymUser> gymUser = gymUserService.requestWorkout(requestWorkoutRequest);
+            Optional<RequestWorkout> requestWorkout = gymUserService.requestWorkout(requestWorkoutRequest);
     
-            if(gymUser.isPresent()){
-                return new ResponseEntity<>("Successfuly requested workout for user " + gymUser.get().getName() +
-                        " with trainer " + gymUser.get().getTrainer().getName(), HttpStatus.OK);
+            if(requestWorkout.isPresent()){
+                return new ResponseEntity<>("Successfuly requested workout for user " + requestWorkout.get().getRequester().getName() +
+                        " with trainer " + requestWorkout.get().getReceiver().getName(), HttpStatus.OK);
             }
             else {
                 return new ResponseEntity<>("Could not request workout: user or trainer do not exist", HttpStatus.BAD_REQUEST);
