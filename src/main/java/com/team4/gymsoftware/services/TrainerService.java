@@ -13,4 +13,6 @@ public interface TrainerService {
 
     public Optional<Workout> createWorkoutFromRequest(RequestWorkoutRequest requestWorkoutRequest);
 
+    public Optional<Workout> assignUserWorkout(RequestWorkoutRequest requestWorkoutRequest);
+
 }

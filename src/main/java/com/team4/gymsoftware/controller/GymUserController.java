@@ -75,5 +75,9 @@ public class GymUserController {
     
         }
 
-
+        @PostMapping(path = "/getalltrainers",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Trainer>> getAllTrainers(){    
+            return new ResponseEntity<>(gymUserService.getAllTrainers(), HttpStatus.OK);
+        }
 }

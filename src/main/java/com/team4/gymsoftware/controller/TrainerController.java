@@ -56,5 +56,15 @@ public class TrainerController {
         }
     }
 
+    @PostMapping(path = "/assignUserWorkout",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> assignUserWorkout(@RequestBody RequestWorkoutRequest requestWorkoutRequest) {
+        Optional<Workout> createdWorkout = workoutService.assignUserWorkout(requestWorkoutRequest);
 
-}
+        if (createdWorkout.isPresent()) {
+            return new ResponseEntity<>("Workout assigned to user successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to assign workout to user", HttpStatus.BAD_REQUEST);
+        }
+    }

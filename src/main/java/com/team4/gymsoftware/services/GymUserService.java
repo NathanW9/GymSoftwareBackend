@@ -12,8 +12,7 @@ public interface GymUserService {
 
     public Optional<GymUser> assignTrainer(AssignTrainerRequest assignTrainerRequest);
 
-    public Optional<GymUser> requestWorkout(RequestWorkoutRequest requestWorkoutRequest);
-
     public List<Trainer> getAllTrainers();
+    
 
 }
