@@ -105,4 +105,13 @@ public class GymUserServiceImpl implements GymUserService{
         return Optional.of(requestWorkoutRepository.save(requestWorkout));
     }
 
+
+    @Override
+    public List<Trainer> getAllTrainers() {
+        List<Trainer> trainers = new ArrayList<>();
+        for (Trainer trainer : TrainerRepository.findAll()){
+            trainers.add(trainer);
+        }
+        return trainers;
+    }
 }

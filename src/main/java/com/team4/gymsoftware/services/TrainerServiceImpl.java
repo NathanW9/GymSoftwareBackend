@@ -67,4 +67,17 @@ public class TrainerServiceImpl implements TrainerService{
             return Optional.empty();
         }
     }
+
+    @Override
+    public Optional<Workout> assignUserWorkout(RequestWorkoutRequest requestWorkoutRequest) {
+        Optional<Workout> workout = workoutRepository.findById(requestWorkoutRequest.workout_id());
+        Optional<GymUser> user = gymUserRepository.findById(requestWorkoutRequest.user_id());
+
+        if (workout.isPresent() && user.isPresent()) {
+            workout.get().setGymUser(user.get());
+            return Optional.of(workoutRepository.save(workout.get()));
+        } else {
+            return Optional.empty();
+        }
+    }
 }
