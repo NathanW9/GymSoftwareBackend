@@ -2,6 +2,7 @@ package com.team4.gymsoftware.controller;
 
 import com.team4.gymsoftware.db.models.GymUser;
 import com.team4.gymsoftware.db.models.RequestWorkout;
+import com.team4.gymsoftware.db.models.Trainer;
 import com.team4.gymsoftware.dto.AssignTrainerRequest;
 import com.team4.gymsoftware.dto.CreateGymUserRequest;
 import com.team4.gymsoftware.dto.RequestWorkoutRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -58,7 +60,7 @@ public class GymUserController {
 
     }
 
-    @PostMapping(path = "/workoutrequest",
+    @PostMapping(path = "/requestworkout",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> requestWorkout(@RequestBody RequestWorkoutRequest requestWorkoutRequest){
@@ -77,7 +79,7 @@ public class GymUserController {
 
         @PostMapping(path = "/getalltrainers",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Trainer>> getAllTrainers(){    
+        public ResponseEntity<List<Trainer>> getAllTrainers(){
             return new ResponseEntity<>(gymUserService.getAllTrainers(), HttpStatus.OK);
         }
 }

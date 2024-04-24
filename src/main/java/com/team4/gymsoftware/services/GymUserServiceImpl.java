@@ -12,6 +12,8 @@ import com.team4.gymsoftware.dto.RequestWorkoutRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -86,8 +88,7 @@ public class GymUserServiceImpl implements GymUserService{
         Optional<GymUser> gymUser = gymUserRepository.findById(requestWorkoutRequest.user_id());
         Optional<Trainer> trainer = trainerRepository.findById(requestWorkoutRequest.trainer_id());
 
-        RequestWorkout requestWorkout = new RequestWorkout() {
-        };
+        RequestWorkout requestWorkout = new RequestWorkout();
 
         if(gymUser.isEmpty() || trainer.isEmpty()){
             return Optional.empty();
@@ -95,11 +96,8 @@ public class GymUserServiceImpl implements GymUserService{
 
         requestWorkout.setRequester(gymUser.get());
         requestWorkout.setReceiver(trainer.get());
-        requestWorkout.setWorkoutType(requestWorkoutRequest.workout_type());
-        requestWorkout.setWorkoutBodyPart(requestWorkoutRequest.workout_bodyPart());
-        requestWorkout.setWorkoutIntensity(String.valueOf(requestWorkoutRequest.workout_intensity()));
+        requestWorkout.setTitle(requestWorkoutRequest.title());
         requestWorkout.setDescription(requestWorkoutRequest.description());
-        requestWorkout.setWorkoutEquipment(requestWorkoutRequest.workout_equipment());
         requestWorkout.setSent(Instant.now());
 
         return Optional.of(requestWorkoutRepository.save(requestWorkout));
@@ -108,10 +106,11 @@ public class GymUserServiceImpl implements GymUserService{
 
     @Override
     public List<Trainer> getAllTrainers() {
-        List<Trainer> trainers = new ArrayList<>();
-        for (Trainer trainer : TrainerRepository.findAll()){
-            trainers.add(trainer);
+        Optional<List<Trainer>> trainers = trainerRepository.findAll();
+        if(trainers.isEmpty()){
+            return new ArrayList<>();
         }
-        return trainers;
+        return trainers.get();
+
     }
 }

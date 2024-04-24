@@ -28,11 +28,8 @@ public class RequestWorkout {
     )
     private Trainer receiver;
     
-    private String workout_type;
-    private String workout_bodyPart;
-    private String workout_intensity;
+    private String title;
     private String description;
-    private Boolean workout_equipment;
     private Instant sent;
 
     public Long getId() {
@@ -47,28 +44,16 @@ public class RequestWorkout {
         return receiver;
     }
 
-    public String getWorkoutType() {
-        return workout_type;
-    }
-
-    public String getWorkoutBodyPart() {
-        return workout_bodyPart;
-    }
-
-    public String getWorkoutIntensity() {
-        return workout_intensity;
-    }
-
-    public Boolean getWorkoutEquipment() {
-        return workout_equipment;
-    }
-
     public Instant getSent() {
         return sent;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setId(Long id) {
@@ -83,27 +68,15 @@ public class RequestWorkout {
         this.receiver = receiver;
     }
 
-    public void setWorkoutType(String workout_type) {
-        this.workout_type = workout_type;
-    }
-
-    public void setWorkoutBodyPart(String workout_bodyPart) {
-        this.workout_bodyPart = workout_bodyPart;
-    }
-
-    public void setWorkoutIntensity(String workout_intensity) {
-        this.workout_intensity = workout_intensity;
-    }
-
-    public void setWorkoutEquipment(Boolean workout_equipment) {
-        this.workout_equipment = workout_equipment;
-    }
-
-    public void setSent(Instant sent) {
+   public void setSent(Instant sent) {
         this.sent = sent;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
