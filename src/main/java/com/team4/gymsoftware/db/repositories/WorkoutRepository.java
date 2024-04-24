@@ -3,6 +3,7 @@ package com.team4.gymsoftware.db.repositories;
 import org.springframework.data.repository.Repository;
 import com.team4.gymsoftware.db.models.*;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface WorkoutRepository extends Repository<Workout, Long> {
@@ -12,6 +13,8 @@ public interface WorkoutRepository extends Repository<Workout, Long> {
     Optional<Workout> findById(long id);
 
     Optional<Workout> findByNameAndGymUser(String name, GymUser gymUser);
+
+    List<Workout> findAllByGymUser(GymUser gymUser);
 
     void deleteById(long id);
 

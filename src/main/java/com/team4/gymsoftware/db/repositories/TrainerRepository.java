@@ -19,6 +19,6 @@ public interface TrainerRepository extends Repository<Trainer, Long> {
 
     Optional<Trainer> findByNameAndPassword(String name, String password);
 
-    Optional<List<Trainer>> findAll();
+    List<Trainer> findAll();
 
 }

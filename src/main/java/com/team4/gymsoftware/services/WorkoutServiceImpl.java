@@ -9,6 +9,8 @@ import com.team4.gymsoftware.dto.CreateWorkoutRequest;
 import com.team4.gymsoftware.dto.EditWorkoutRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -66,17 +68,17 @@ public class WorkoutServiceImpl implements WorkoutService{
     }
 
     @Override
-    public Optional<Workout> patchWorkout(EditWorkoutRequest editWorkoutRequest){
+    public Optional<Workout> patchWorkout(EditWorkoutRequest editWorkoutRequest) {
 
         Optional<GymUser> tempUser = gymUserRepository.findById(editWorkoutRequest.createWorkoutRequest().user_id());
-        if(tempUser.isEmpty()){
+        if (tempUser.isEmpty()) {
             return Optional.empty();
         }
 
-        Optional<Workout> tempWorkout =  workoutRepository.findByNameAndGymUser(editWorkoutRequest
+        Optional<Workout> tempWorkout = workoutRepository.findByNameAndGymUser(editWorkoutRequest
                 .createWorkoutRequest().name(), tempUser.get());
 
-        if(tempWorkout.isEmpty()){
+        if (tempWorkout.isEmpty()) {
             return Optional.empty();
         }
 
@@ -86,5 +88,15 @@ public class WorkoutServiceImpl implements WorkoutService{
         return saveWorkout(editWorkoutRequest.createWorkoutRequest());
 
     }
+
+    @Override
+    public List<Workout> getWorkouts(Long userId) {
+
+        GymUser gymUser = gymUserRepository.findById(userId).get();
+
+        return workoutRepository.findAllByGymUser(gymUser);
+
+    }
+
 
 }

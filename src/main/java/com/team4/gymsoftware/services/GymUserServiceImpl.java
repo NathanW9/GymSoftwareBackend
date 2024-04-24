@@ -3,6 +3,7 @@ package com.team4.gymsoftware.services;
 import com.team4.gymsoftware.db.models.GymUser;
 import com.team4.gymsoftware.db.models.RequestWorkout;
 import com.team4.gymsoftware.db.models.Trainer;
+import com.team4.gymsoftware.db.repositories.AuthSessionUserRepository;
 import com.team4.gymsoftware.db.repositories.GymUserRepository;
 import com.team4.gymsoftware.db.repositories.RequestWorkoutRepository;
 import com.team4.gymsoftware.db.repositories.TrainerRepository;
@@ -23,13 +24,16 @@ public class GymUserServiceImpl implements GymUserService{
     private final GymUserRepository gymUserRepository;
     private final TrainerRepository trainerRepository;
     private final RequestWorkoutRepository requestWorkoutRepository;
+    private final AuthSessionUserRepository authSessionUserRepository;
 
     public GymUserServiceImpl(GymUserRepository gymUserRepository,
                               TrainerRepository trainerRepository,
-                              RequestWorkoutRepository requestWorkoutRepository){
+                              RequestWorkoutRepository requestWorkoutRepository,
+                              AuthSessionUserRepository authSessionUserRepository){
         this.gymUserRepository = gymUserRepository;
         this.trainerRepository = trainerRepository;
         this.requestWorkoutRepository = requestWorkoutRepository;
+        this.authSessionUserRepository = authSessionUserRepository;
     };
 
     @Override
@@ -85,16 +89,17 @@ public class GymUserServiceImpl implements GymUserService{
 
     @Override
     public Optional<RequestWorkout> requestWorkout(RequestWorkoutRequest requestWorkoutRequest) {
-        Optional<GymUser> gymUser = gymUserRepository.findById(requestWorkoutRequest.user_id());
+        GymUser gymUser = authSessionUserRepository.
+                findByToken(requestWorkoutRequest.token()).get().getUser();
         Optional<Trainer> trainer = trainerRepository.findById(requestWorkoutRequest.trainer_id());
 
         RequestWorkout requestWorkout = new RequestWorkout();
 
-        if(gymUser.isEmpty() || trainer.isEmpty()){
+        if(trainer.isEmpty()){
             return Optional.empty();
         }
 
-        requestWorkout.setRequester(gymUser.get());
+        requestWorkout.setRequester(gymUser);
         requestWorkout.setReceiver(trainer.get());
         requestWorkout.setTitle(requestWorkoutRequest.title());
         requestWorkout.setDescription(requestWorkoutRequest.description());
@@ -106,11 +111,7 @@ public class GymUserServiceImpl implements GymUserService{
 
     @Override
     public List<Trainer> getAllTrainers() {
-        Optional<List<Trainer>> trainers = trainerRepository.findAll();
-        if(trainers.isEmpty()){
-            return new ArrayList<>();
-        }
-        return trainers.get();
+        return trainerRepository.findAll();
 
     }
 }

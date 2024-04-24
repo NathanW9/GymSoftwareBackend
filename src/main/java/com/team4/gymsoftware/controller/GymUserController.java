@@ -1,5 +1,6 @@
 package com.team4.gymsoftware.controller;
 
+import com.team4.gymsoftware.auth.AuthService;
 import com.team4.gymsoftware.db.models.GymUser;
 import com.team4.gymsoftware.db.models.RequestWorkout;
 import com.team4.gymsoftware.db.models.Trainer;
@@ -21,9 +22,11 @@ import java.util.Optional;
 public class GymUserController {
 
     private GymUserService gymUserService;
+    private AuthService authService;
 
-    public GymUserController(GymUserService gymUserService) {
+    public GymUserController(GymUserService gymUserService, AuthService authService) {
         this.gymUserService = gymUserService;
+        this.authService = authService;
     }
 
     @PostMapping(path = "/registeruser",
@@ -48,6 +51,12 @@ public class GymUserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> assignTrainer(@RequestBody AssignTrainerRequest assignTrainerRequest){
 
+        Optional<Trainer> trainer = authService.authenticateTrainer(assignTrainerRequest.token());
+
+        if(trainer.isEmpty()){
+            return new ResponseEntity<>("Could not assign user: trainer cannot be authenticated", HttpStatus.BAD_REQUEST);
+        }
+
         Optional<GymUser> gymUser = gymUserService.assignTrainer(assignTrainerRequest);
 
         if(gymUser.isPresent()){
@@ -64,7 +73,12 @@ public class GymUserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> requestWorkout(@RequestBody RequestWorkoutRequest requestWorkoutRequest){
-            
+
+            Optional<GymUser> user = authService.authenticateUser(requestWorkoutRequest.token());
+            if(user.isEmpty()){
+                return new ResponseEntity<>("Could not request workout: user cannot be authenticated", HttpStatus.BAD_REQUEST);
+            }
+
             Optional<RequestWorkout> requestWorkout = gymUserService.requestWorkout(requestWorkoutRequest);
     
             if(requestWorkout.isPresent()){
