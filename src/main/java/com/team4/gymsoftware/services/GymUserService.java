@@ -19,6 +19,8 @@ public interface GymUserService {
     public List<Trainer> getAllTrainers();
 
     public Optional<RequestWorkout> requestWorkout(RequestWorkoutRequest requestWorkoutRequest);
+
+    public Optional<GymUser> getUserByIdIfExists(long id);
     
 
 }

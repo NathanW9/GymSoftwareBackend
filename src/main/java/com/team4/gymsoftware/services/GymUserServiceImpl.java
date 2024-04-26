@@ -108,10 +108,18 @@ public class GymUserServiceImpl implements GymUserService{
         return Optional.of(requestWorkoutRepository.save(requestWorkout));
     }
 
+    @Override
+    public Optional<GymUser> getUserByIdIfExists(long id) {
+        return gymUserRepository.findById(id);
+    }
+
 
     @Override
     public List<Trainer> getAllTrainers() {
         return trainerRepository.findAll();
 
     }
+
+
+
 }

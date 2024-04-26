@@ -5,6 +5,7 @@ import com.team4.gymsoftware.db.models.*;
 import com.team4.gymsoftware.dto.CreateWorkoutRequest;
 import com.team4.gymsoftware.dto.EditWorkoutRequest;
 import com.team4.gymsoftware.dto.GetWorkoutsRequest;
+import com.team4.gymsoftware.services.GymUserService;
 import com.team4.gymsoftware.services.WorkoutService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,12 +24,15 @@ import java.util.Optional;
 public class WorkoutController {
 
     private WorkoutService workoutService;
+    private GymUserService gymUserService;
     private AuthService authService;
 
     public WorkoutController(WorkoutService workoutService,
-                             AuthService authService){
+                             AuthService authService,
+                             GymUserService gymUserService){
         this.workoutService = workoutService;
         this.authService = authService;
+        this.gymUserService = gymUserService;
     }
 
     @PostMapping(path = "/createworkout",
@@ -36,6 +40,17 @@ public class WorkoutController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<String> createWorkout(@RequestBody CreateWorkoutRequest createWorkoutRequest){
+
+        Optional<Trainer> trainer = authService.authenticateTrainer(createWorkoutRequest.token());
+
+        if(trainer.isEmpty()) {
+            return new ResponseEntity<>("Could not create workout: trainer could not be authenticated", HttpStatus.UNAUTHORIZED);
+        }
+
+        if(!gymUserService.getUserByIdIfExists(createWorkoutRequest.user_id()).get()
+                .getTrainer().getId().equals(trainer.get().getId())){
+            return new ResponseEntity<>("Could not create workout: trainer does not have access to this user", HttpStatus.UNAUTHORIZED);
+        }
 
         try {
             Optional<Workout> savedWorkout = workoutService.saveWorkout(createWorkoutRequest);
@@ -56,6 +71,17 @@ public class WorkoutController {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<String> editWorkout(@RequestBody EditWorkoutRequest editWorkoutRequest){
+
+        Optional<Trainer> trainer = authService.authenticateTrainer(editWorkoutRequest.token());
+
+        if(trainer.isEmpty()) {
+            return new ResponseEntity<>("Could not edit workout: trainer could not be authenticated", HttpStatus.UNAUTHORIZED);
+        }
+
+        if(!gymUserService.getUserByIdIfExists(editWorkoutRequest.createWorkoutRequest().user_id()).get()
+                .getTrainer().getId().equals(trainer.get().getId())){
+            return new ResponseEntity<>("Could not edit workout: trainer does not have access to this user", HttpStatus.UNAUTHORIZED);
+        }
 
         try{
 

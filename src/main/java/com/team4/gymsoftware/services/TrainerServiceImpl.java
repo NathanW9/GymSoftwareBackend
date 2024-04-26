@@ -63,7 +63,7 @@ public class TrainerServiceImpl implements TrainerService{
 
         Trainer trainer = trainerRepository.findById(trainerId).get();
 
-        return requestWorkoutRepository.findAllByTrainer(trainer);
+        return requestWorkoutRepository.findAllByReceiver(trainer);
 
     }
 
