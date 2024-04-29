@@ -49,7 +49,7 @@ public class TrainerController {
 
     }
 
-    @PostMapping(path = "getrequests",
+    @PostMapping(path = "/getrequests",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RequestWorkout>> getRequests(@RequestBody GetRequestsRequest getRequestsRequest){
