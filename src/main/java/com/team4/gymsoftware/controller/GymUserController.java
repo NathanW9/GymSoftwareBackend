@@ -11,10 +11,12 @@ import com.team4.gymsoftware.services.GymUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,7 +81,11 @@ public class GymUserController {
                 return new ResponseEntity<>("Could not request workout: user cannot be authenticated", HttpStatus.BAD_REQUEST);
             }
 
-            Optional<RequestWorkout> requestWorkout = gymUserService.requestWorkout(requestWorkoutRequest);
+            Optional<RequestWorkout> requestWorkout = gymUserService.requestWorkout(
+                    new RequestWorkoutRequest(requestWorkoutRequest.token(), requestWorkoutRequest.trainer_id(),
+                            requestWorkoutRequest.title(), requestWorkoutRequest.description(),
+                            Instant.now())
+            );
     
             if(requestWorkout.isPresent()){
                 return new ResponseEntity<>("Successfuly requested workout for user " + requestWorkout.get().getRequester().getName() +
@@ -91,7 +97,7 @@ public class GymUserController {
     
         }
 
-        @PostMapping(path = "/getalltrainers",
+        @GetMapping(path = "/getalltrainers",
             produces = MediaType.APPLICATION_JSON_VALUE)
         public ResponseEntity<List<Trainer>> getAllTrainers(){
             return new ResponseEntity<>(gymUserService.getAllTrainers(), HttpStatus.OK);
