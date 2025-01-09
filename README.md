@@ -1,3 +1,5 @@
+Backend of a Gym App in Spring-Boot, a java based framework
+
 Figma file : https://www.figma.com/file/CvnhKnM6hjwubAKTgOCIbP/Gym-Star?type=design&node-id=236-1425&mode=design&t=VLKnvnl2tFPk123H-0
 
 Sprint 1 Review:
